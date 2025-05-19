@@ -139,12 +139,12 @@ snippet '([^ \$\n]+)+subindex' "smartsubindex" rA
 endsnippet
 
 context "math()"
-snippet '([^ \$\n]+)+superindex' "smartsubindex" rA
+snippet '([^ \$\n]+)+superindex' "smartsuperindex" rA
 `!p snip.rv = match.group(1)`^{$1}$0
 endsnippet
 
 context "math()"
-snippet '([^ \$\n]+)+subsuperindex' "smartsubindex" rA
+snippet '([^ \$\n]+)+subsuperindex' "smart subindex and superindex" rA
 `!p snip.rv = match.group(1)`_{$1}^{$2}$0
 endsnippet
 
