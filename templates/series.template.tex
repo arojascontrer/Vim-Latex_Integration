@@ -1,0 +1,53 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%No alteres este bloque de comandos. Si eres experto en LaTeX, puedes incluir paquetes adicionales, crear macros, etc., inmediatamente debajo de este bloque de comandos, pero asegúrate de NO alterar la configuración de encabezado, márgenes y comentarios aquí. 
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, enumitem, fancyhdr, color, comment, graphicx, environ, xcolor, soul}
+\setulcolor{red}
+\newcommand{\ansuline}[1]{{\setulcolor{red}\ul{#1}}} 
+\pagestyle{fancy}
+\setlength{\headheight}{65pt}
+\newenvironment{problema}[2][Problema]{\begin{trivlist}
+		\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{solucion}
+{\emph{Soluci\'on:}
+}
+{
+	\qed
+}
+\specialcomment{com}{ \color{blue} \textbf{Comentario:} }{\color{black}} %para comentarios del instructor durante la evaluación
+\NewEnviron{puntuacion}{\marginpar{ \color{blue} \tiny Puntuaci\'on del Problema: \BODY \color{black} }}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Llena la información correspondiente abajo
+\rhead{Rojas Contreras Aarón}  %reemplaza con tu nombre
+\lhead{Matemáticas XYZ \\ Sección XYZ \\ Semestre XYZ \\ Tarea XYZ} %reemplaza XYZ con el número del curso, semestre (por ejemplo, "Primavera 2019") y número de tarea.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%No alteres este bloque.
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	%Copia el siguiente bloque de texto para cada problema de la tarea.
+	\begin{problema}{x.y.z} 
+		Escribe el enunciado del problema aquí (tal como aparece en el libro).
+	\end{problema}
+	\begin{solucion}
+		Escribe tu solución aquí.
+	\end{solucion}
+	
+	%Copia el siguiente bloque de texto para cada problema de la tarea.
+	\begin{problema}{x.y.z}
+		Escribe el enunciado del problema aquí (tal como aparece en el libro).
+	\end{problema}
+	\begin{solucion}
+		Escribe tu solución aquí.
+	\end{solucion}
+		
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%No alteres nada por debajo de esta línea.
+\end{document}
