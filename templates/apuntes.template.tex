@@ -1,0 +1,66 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}	% Para caracteres en español
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd,multirow,booktabs,fullpage,lastpage,enumitem,fancyhdr,mathrsfs,wrapfig,setspace,calc,multicol,cancel,amsmath,empheq,framed,xcolor}
+\usepackage[retainorgcmds]{IEEEtrantools}
+\usepackage[margin=3cm]{geometry}
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\usepackage[most]{tcolorbox}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\parskip 12pt
+\geometry{margin=1in, headsep=0.25in}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{reg}{Rule}
+\newtheorem{exer}{Exercise}
+\newtheorem{note}{Note}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\setcounter{section}{0}
+\title{Apuntes}	
+\thispagestyle{empty}	
+\begin{center}
+	{\LARGE \bf Apuntes}\\
+	Rojas C. Aarón\\
+	Semestre\\
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Sección 1}
+\subsection{Subsección 1}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta euismod neque vitae imperdiet. Suspendisse ac est condimentum, pellentesque dui a, efficitur nibh. 
+	\begin{note}
+	\textbf{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta euismod neque vitae imperdiet. Suspendisse ac est condimentum, pellentesque dui a, efficitur nibh.}
+	\end{note}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta euismod neque vitae imperdiet. Suspendisse ac est condimentum, pellentesque dui a, efficitur nibh.
+$$E=mc^{2}$$
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta euismod neque vitae imperdiet. Suspendisse ac est condimentum, pellentesque dui a, efficitur nibh.
+\subsection{Subsección 2}
+	\begin{shaded}
+	\textbf{Example ecuation} \newline
+		\begin{equation}
+		F_{tide} = -GM_mm(\frac{\hat{d}}{d^2}-\frac{\hat{d_0}}{d_0^2})
+		\end{equation}
+	Where:
+		\begin{equation*}
+			\begin{split}
+			G = \text{Gravitational Constant} \\
+			d = \text{Object's Position Relative to Moon} \\
+			d_0 = \text{Earth's Center Relative to the moon}\\
+			M_m = \text{Mass of the moon}
+			\end{split}
+		\end{equation*}
+	\end{shaded}
+\newpage
+\subsection{The Angular Velocity Vector}
+The rest of the notes and the chapter will over reference frames that are rotating with respect to the inertial reference frame, so angular velocity has to be used. 
+\begin{defn}
+\textbf{Euler's Theorem} - The most general motion of any body relative to a fixed point \textit{O} is a rotation about some axis through \textit{O} To specify this rotation about a given point O, we only have to give the direction of the axis and the rate of rotation, or angular velocity $\omega$. Because this has a magnitude and direction, it is an obvious choice to write this rotation vector as $\omega$, the angular velocity vector. That is:
+\begin{equation}
+\omega = \omega\textbf{u}
+\end{equation}
+Where \textbf{u} is the unit vector
+\end{defn}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
