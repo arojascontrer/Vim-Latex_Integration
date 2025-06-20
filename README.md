@@ -2,7 +2,7 @@ VIM-Latex-Integration
 
 A lightweight combination of VIM configs and resources to create class notes.
 
-Make sure you are running on VIM 9.1.1385 or higher and that you compiled with pytho:w:n 3 support before installing the resources.
+Make sure you are running on VIM 9.1.1385 or higher and that you compiled with python 3 support before installing the resources.
 
 Based on Gilles Castel note taking method. 
 https://castel.dev/
