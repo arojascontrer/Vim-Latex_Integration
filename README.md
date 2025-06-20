@@ -1,10 +1,8 @@
-This repository has been deprecated, for the new LaTeX configurations and resources for nvim look for NVIM-LaTeX_Integration or visit https://github.com/arojascontrer/NVIM-LaTeX_Integration
- 
 VIM-Latex-Integration
 
-A combination of VIM configs and resources to create class notes.
+A lightweight combination of VIM configs and resources to create class notes.
 
-Make sure you are running on VIM 9.1.1385 or higher and that you compiled with python 3 support before installing the resources.
+Make sure you are running on VIM 9.1.1385 or higher and that you compiled with pytho:w:n 3 support before installing the resources.
 
 Based on Gilles Castel note taking method. 
 https://castel.dev/
