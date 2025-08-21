@@ -11,7 +11,40 @@ def env(name):
 
 endglobal
 
-#Document Snippets
+#Text Formmating
+
+snippet sbtl "subtitle" bA
+\textbf{$1}\\\
+$0
+endsnippet
+
+snippet bld "bold text" w
+\textbf{$1}$0
+endsnippet
+
+snippet newln "new line" Ai
+\\\
+endsnippet
+
+snippet newpr "new paragraph" Ai
+\par
+endsnippet
+
+snippet sec "section" bA
+\\section{$1}$0
+endsnippet
+
+snippet ssec "subsection" bA
+\\subsection{$1}$0
+endsnippet
+
+snippet center "centering" bA
+\\begin{center}
+	$0
+\\end{center}
+endsnippet
+
+#Environments
 
 snippet beg "begin{} / end{}" bA
 \\begin{$1}
@@ -19,77 +52,50 @@ snippet beg "begin{} / end{}" bA
 \\end{$1}
 endsnippet
 
-snippet sec "section{}" bA
-\\section{$1}
-$0
+
+snippet enum "Enumerate" bA
+\begin{enumerate}
+	$0
+\end{enumerate}
 endsnippet
 
-snippet ssec "subsection{}" bA
-\\subsection{$1}
-$0
-endsnippet
-
-snippet sign "sign" bA
-Rojas C. Aarón\\
-endsnippet
-
-snippet itemize "itemize" bA
+snippet item "Itemize" bA
 \begin{itemize}
-	$1
+	$0
 \end{itemize}
 endsnippet
 
-context "env()"
-snippet item "item" bA
-\item{$1} $0
+snippet entry "list entry" bA
+\item{$1}$0
 endsnippet
 
-snippet fig "Figure Environment" b
-\begin{figure}[${1:htpb}]
-	\centering
-	${2:\includegraphics[width=0.8\textwidth]{$3}}
-	\caption{${4:$3}}
-	\label{fig:${5:${3/\W+/-/g}}}
-\end{figure}
-endsnippet
-
-snippet table "Table environment" b
-\begin{table}[${1:htpb}]
-	\centering
-	\caption{${2:caption}}
-	\label{tab:${3:label}}
-	\begin{tabular}{${5:c}}
-	$0${5/((?<=.)c|l|r)|./(?1: & )/g}
-	\end{tabular}
-\end{table}
-endsnippet
-
-snippet "newln" "new line" Aw
-\newline
-endsnippet
-
-snippet "newpg" "new page" Aw
-\newpage
+snippet exp "example env" bA
+\begin{shaded}
+\textbf{Ejemplo}\\\
+$0
+\end{shaded}
 endsnippet
 
 context "math()"
-snippet text "escape into text mode" Ai
-\text{$1}$0
+snippet boxed "boxed latex" Ai
+\boxed{$1} $0
 endsnippet
 
-context "math()"
-snippet newln "new line in math mode" Aw
-\\\
+snippet 2cl "doble column table environment" bA
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|}
+\hline
+\textbf{$1} & \textbf{$2} \\\ \hline
+$3 & $4 \\\ \hline $5
+\end{tabular}
+\end{table} $0
 endsnippet
 
-snippet newpr "new paragraph" Aw
-\par
-endsnippet
+#Math environments
 
-#Math Snippets
-
-snippet mathl "Math in line" Ai 
-$ $1 $`!p
+snippet ii "Math Inline" wA
+\( ${1} \)`!p
 if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
 	snip.rv = ' '
 else:
@@ -97,180 +103,983 @@ else:
 `$2
 endsnippet
 
-snippet mathm "Math" bA
-$$ $1 $$
-endsnippet
-
-#Basic Written Math
-
-context "math()"
-snippet equal "=" Aw
-=
+snippet dd "Direct Math" wA
+\[
+$1
+\]
+$0
 endsnippet
 
 context "math()"
-snippet plus "+" Aw
+snippet text "Esc to text" wA
+\text{$1}$0
+endsnippet
+
+#Written math
+
+context "math()"
+snippet plus "+" wA
 +
 endsnippet
 
 context "math()"
-snippet minus "-" Aw
+snippet minus "-" wA
 -
 endsnippet
 
 context "math()"
-snippet  product "*" Aw
-\cdot
+snippet equals "=" wA
+=
 endsnippet
 
 context "math()"
-snippet '([^ \$\n]+)\s+over' "Smart fraction (captures numerator)" rA
-\\frac{`!p snip.rv = match.group(1)`}{${1}}$0
+snippet " squared" "²" rA
+^2
 endsnippet
 
 context "math()"
-snippet frac "/" Aw
+snippet " cubed" "³" rA
+^3
+endsnippet
+
+#Groupings
+
+context "math()"
+snippet ( "parenthesis init" iA
+($1)$0
+endsnippet
+
+context "math()"
+snippet [ "brackets init" iA
+[$1]$0
+endsnippet
+
+context "math()"
+snippet prt "adaptable parenthesis" iA
+\left( $1 \right)$0
+endsnippet
+
+context "math()"
+snippet brk "adaptable brackets" iA
+\left[ $1 \right]$0
+endsnippet
+
+context "math()"
+snippet brc "adaptable braces" iA
+\left\\{ $1 \right\\}$0
+endsnippet
+
+context "math()"
+snippet cvr "adaptable chevrons (angle brackets)" iA
+\left\langle $1 \right\rangle$0
+endsnippet
+
+context "math()"
+snippet abs "adaptable absolute value" iA
+\left| $1 \right|$0
+endsnippet
+
+#Math constructs
+
+priority 1000
+context "math()"
+snippet '^.*\)/' "() frac" wrA
+`!p
+stripped = match.string[:-1]
+depth = 0
+i = len(stripped) - 1
+while True:
+	if stripped[i] == ')': depth += 1
+	if stripped[i] == '(': depth -= 1
+	if depth == 0: break;
+	i-=1
+snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
+`{$1}$0
+endsnippet
+
+priority 1000
+context "math()"
+snippet '^.*\)over' "() frac over" wrA
+`!p
+stripped = match.string[:-4]
+depth = 0
+i = len(stripped) - 1
+while True:
+    if stripped[i] == ')':
+        depth += 1
+    elif stripped[i] == '(':
+        depth -= 1
+    if depth == 0:
+        break
+    i -= 1
+snip.rv = stripped[:i] + "\\frac{" + stripped[i+1:-1] + "}"
+`{$1}$0
+endsnippet
+
+context "math()"
+snippet frac "fraction" Aw
 \frac{$1}{$2}$0
 endsnippet
 
 context "math()"
-snippet '([^ \$\n]+)+subindex' "smartsubindex" rA
-`!p snip.rv = match.group(1)`_{$1}$0
+snippet sqrt "square root" wA
+\sqrt{$1}$0
 endsnippet
 
 context "math()"
-snippet '([^ \$\n]+)+superindex' "smartsuperindex" rA
-`!p snip.rv = match.group(1)`^{$1}$0
+snippet root "n-root of" wA
+\sqrt[$1]{$2}$0
+endsnippet
+
+context "math()" 
+snippet " power" "^" rA
+^{$1}$0
+endsnippet
+
+context "math()" 
+snippet vect "vector" wA
+\vec{$1}$0
+endsnippet
+
+context "math()" 
+snippet _ "sub index" Ai
+_{$1}$0
+endsnippet
+
+context "math()" 
+snippet sb "sub index" Ai
+_{$1}$0
+endsnippet
+
+context "math()" 
+snippet ^ "super index" Ai
+^{$1}$0
+endsnippet
+
+context "math()" 
+snippet sp "sub index" Ai
+^{$1}$0
+endsnippet
+
+context "math()" 
+snippet double "sub index" Ai
+^{$1}_{$2}$0
+endsnippet
+
+ context "math()" 
+snippet defsum "defined summation" wA
+\sum^{$1}_{$2} $0
+endsnippet
+
+context "math()" 
+snippet defint "definied integral" wA
+\int^{$1}_{$2} $0
+endsnippet
+
+context "math()" 
+snippet defprod "defined product" wA
+\prod^{$1}_{$2} $0
+endsnippet
+
+context "math()" 
+snippet deflim "defined limit" wA
+\lim_{$1} $0
 endsnippet
 
 context "math()"
-snippet '([^ \$\n]+)+subsuperindex' "smart subindex and superindex" rA
-`!p snip.rv = match.group(1)`_{$1}^{$2}$0
+snippet binom "binomial" w
+\binom{$1}{$2}$0
+endsnippet
+
+#Relations
+
+context "math()"
+snippet approx "approximate" wA
+\approx $0
+endsnippet
+
+context "math()"
+snippet less "<" wA
+<
+endsnippet
+
+context "math()"
+snippet greater ">" wA
+>
+endsnippet
+
+context "math()"
+snippet leq "less or equal" w
+\leq $0
+endsnippet
+
+context "math()"
+snippet geq "greater or equal" w
+\geq $0
 endsnippet
 
 #Logic and Set Theory
 
 context "math()"
-snippet and "and" Aw
-\land $0
+snippet defset "define set" wA
+\mathbb{$1} $0
 endsnippet
 
 context "math()"
-snippet or "or" Aw
-\lor $0
+snippet forall "for all" w
+\forall $0 
 endsnippet
 
 context "math()"
-snippet not "not" w
-\lnot $0
-endsnippet
-
-context "math()"
-snippet implies "implies" Aw
-\implies $0
-endsnippet
-
-context "math()"
-snippet if "if and only if" Aw
-\iff $0
-endsnippet
-
-context "math()"
-snippet implied "implied" Aw
-\impliedby $0
-endsnippet
-
-context "math()"
-snippet forall "for all" Aw
-\forall $0
-endsnippet
-
-context "math()"
-snippet exist "exist" Aw
+snippet exists "exists" w
 \exists $0
 endsnippet
 
 context "math()"
-snippet notexist "does not exist" Aw
+snippet nexists "does not exists" w
 \nexists $0
 endsnippet
 
 context "math()"
-snippet in "in" Aw
+snippet in "in" w
 \in $0
 endsnippet
 
 context "math()"
-snippet notin "and" Aw
+snippet ntin "not in" w
 \notin $0
 endsnippet
 
 context "math()"
-snippet ni "ni" Aw
-\ni $0
+snippet complement "complement" w
+\complement $0
 endsnippet
 
 context "math()"
-snippet notni "and" Aw
-\notni $0
-endsnippet
-
-context "math()"
-snippet and "and" Aw
-\sub $0
-endsnippet
-
-context "math()"
-snippet ssub "subset" Aw
+snippet subset "subset" w
 \subset $0
 endsnippet
 
 context "math()"
-snippet ssup "superset" Aw
+snippet supset "supset" w
 \supset $0
 endsnippet
 
 context "math()"
-snippet ssubeq "subset eq" Aw
+snippet subeq "subset" w
 \subseteq $0
 endsnippet
 
 context "math()"
-snippet ssupeq "superset eq" Aw
+snippet supeq "supset" w
 \supseteq $0
 endsnippet
 
 context "math()"
-snippet therefore "therefore" Aw
+snippet mid "|" w
+\mid $0
+endsnippet
+
+context "math()"
+snippet and "logic and" w
+\land $0
+endsnippet
+
+context "math()"
+snippet or "logic or" w
+\lor $0
+endsnippet
+
+context "math()"
+snippet ni "ni" w
+\ni $0
+endsnippet
+
+context "math()"
+snippet ntni "not ni" w
+\notni $0
+endsnippet
+
+context "math()"
+snippet therefore "therefore" w
 \therefore $0
 endsnippet
 
 context "math()"
-snippet because "because" Aw
+snippet because "because" w
 \because $0
 endsnippet
 
 context "math()"
-snippet null "empty set" Aw
-\varnothing $0
+snippet mapsto "maps to" w
+\mapsto $0
 endsnippet
 
 context "math()"
-snippet to "to" Aw
+snippet to "to" w
 \to $0
 endsnippet
 
 context "math()"
-snippet from "from" Aw
+snippet gets "gets" w
 \gets $0
 endsnippet
 
 context "math()"
-snippet fromto "from to" Aw
+snippet lrarrow "left to right arrow" w
 \leftrightarrow $0
 endsnippet
 
-#Greek letters
+context "math()"
+snippet empty "empty set" w
+\empty $0
+endsnippet
 
+context "math()"
+snippet null "null" w
+\varnothing $0
+endsnippet
 
+context "math()"
+snippet implies "implies" w
+\implies $0
+endsnippet
 
+context "math()"
+snippet implied "implied by" w
+\impliedby $0
+endsnippet
+
+context "math()"
+snippet if "if" w
+\iff $0
+endsnippet
+
+context "math()"
+snippet not "logic not" w
+\lnot $0
+endsnippet
+
+context "math()"
+snippet infinity "infinity" Aw
+\infty
+endsnippet
+
+#Mathematical Functions
+
+context "math()"
+snippet sin "sine" w
+\sin $0
+endsnippet
+
+context "math()"
+snippet cos "cosine" w
+\cos $0
+endsnippet
+
+context "math()"
+snippet tan "tangent" w
+\tan $0
+endsnippet
+
+context "math()"
+snippet csc "cosecant" w
+\csc $0
+endsnippet
+
+context "math()"
+snippet sec "secant" w
+\sec $0
+endsnippet
+
+context "math()"
+snippet cot "cotangent" w
+\cot $0
+endsnippet
+
+context "math()"
+snippet arcsin "arcsine" w
+\arcsin $0
+endsnippet
+
+context "math()"
+snippet arccos "arccosine" w
+\arccos $0
+endsnippet
+
+context "math()"
+snippet arctan "arctangent" w
+\arctan $0
+endsnippet
+
+context "math()"
+snippet sinh "hyperbolic sine" w
+\sinh $0
+endsnippet
+
+context "math()"
+snippet cosh "hyperbolic cosine" w
+\cosh $0
+endsnippet
+
+context "math()"
+snippet tanh "hyperbolic tangent" w
+\tanh $0
+endsnippet
+
+context "math()"
+snippet arg "argument" w
+\arg $0
+endsnippet
+
+context "math()"
+snippet ln "natural log" w
+\ln $0
+endsnippet
+
+context "math()"
+snippet log "logaritm" w
+\log $0
+endsnippet
+
+context "math()"
+snippet det "determinant" w
+\det $0
+endsnippet
+
+context "math()"
+snippet ker "kernel" w
+\ker $0
+endsnippet
+
+context "math()"
+snippet dim "dimension" w
+\dim $0
+endsnippet
+
+context "math()"
+snippet min "min" w
+\min $0
+endsnippet
+
+context "math()"
+snippet max "max" w
+\max $0
+endsnippet
+
+context "math()"
+snippet argmin "argmin" w
+\argmin $0
+endsnippet
+
+context "math()"
+snippet argmax "argmax" w
+\argmax $0
+endsnippet
+
+context "math()"
+snippet sup "sup" w
+\sup $0
+endsnippet
+
+#Binary Operators
+
+context "math()"
+snippet cdot "point product" w
+\cdot $0
+endsnippet
+
+context "math()"
+snippet times "cross product" w
+\times $0
+endsnippet
+
+context "math()"
+snippet amalg "amalg" w
+\amalg $0
+endsnippet
+
+context "math()"
+snippet And "And" w
+\And $0
+endsnippet
+
+context "math()"
+snippet ast "ast" w
+\ast $0
+endsnippet
+
+context "math()"
+snippet barwedge "barwedge" w
+\barwedge $0
+endsnippet
+
+context "math()"
+snippet bigcircle "big circle" w
+\bigcircle $0
+endsnippet
+
+context "math()"
+snippet bmod "mod" w
+\bmod $0
+endsnippet
+
+context "math()"
+snippet boxdot "box dot operator" w
+\boxdot $0
+endsnippet
+
+context "math()"
+snippet boxminus "box minus operator" w
+\boxminus $0
+endsnippet
+
+context "math()"
+snippet boxplus "box minus operator" w
+\boxplus $0
+endsnippet
+
+context "math()"
+snippet boxtimes "box times operator" w
+\boxtimes $0
+endsnippet
+
+context "math()"
+snippet bullet "bullet operator" w
+\bullet $0
+endsnippet
+
+context "math()"
+snippet dcap "double cap operator" w
+\Cap $0
+endsnippet
+
+context "math()"
+snippet cap "cap operator" w
+\cap $0
+endsnippet
+
+context "math()"
+snippet circ "circle operator" w
+\circ $0
+endsnippet
+
+context "math()"
+snippet circast "circled ast operator" w
+\circledast $0
+endsnippet
+
+context "math()"
+snippet circcirc "circled circle operator" w
+\circledcirc $0
+endsnippet
+
+context "math()"
+snippet dcup "double cup operator" w
+\Cup $0
+endsnippet
+
+context "math()"
+snippet cup "cup operator" w
+\cup $0
+endsnippet
+
+context "math()"
+snippet curlvee "curly vee operator" w
+\curlyvee $0
+endsnippet
+
+context "math()"
+snippet curlwedge "curly wedge operator" w
+\curlywedge $0
+endsnippet
+
+context "math()"
+snippet div "division operator" w
+\div $0
+endsnippet
+
+context "math()"
+snippet divtimes "divided on times operator" w
+\divideontimes $0
+endsnippet
+
+context "math()"
+snippet dotplus "dot plus operator" w
+\dotplus $0
+endsnippet
+
+context "math()"
+snippet dbarwedge "double bar wedge operator" w
+\doublebarwedge $0
+endsnippet
+
+context "math()"
+snippet gdot "greater than dot operator" w
+\gtrdot $0
+endsnippet
+
+context "math()"
+snippet intercal "perpendicular operator" w
+\intercal $0
+endsnippet
+
+context "math()"
+snippet ltt "left three times operator" w
+\leftthreetimes $0
+endsnippet
+
+context "math()"
+snippet rtt "right three times operator" w
+\rightthreetimes $0
+endsnippet
+
+context "math()"
+snippet ldot "less then dot operator" w
+\lessdot $0
+endsnippet
+
+context "math()"
+snippet lhd "lhd operator" w
+\lhd $0
+endsnippet
+
+context "math()"
+snippet rhd "rhd operator" w
+\rhd $0
+endsnippet
+
+context "math()"
+snippet ltimes "ltimes operator" w
+\ltimes $0
+endsnippet
+
+context "math()"
+snippet rtimes "rtimes operator" w
+\rtimes $0
+endsnippet
+
+context "math()"
+snippet mp "minus plus operator" w
+\mp $0
+endsnippet
+
+context "math()"
+snippet pm "plus minus operator" w
+\pm $0
+endsnippet
+
+context "math()"
+snippet odot "odot operator" w
+\odot $0
+endsnippet
+
+context "math()"
+snippet ominus "ominus operator" w
+\ominus $0
+endsnippet
+
+context "math()"
+snippet oplus "oplus operator" w
+\oplus $0
+endsnippet
+
+context "math()"
+snippet otimes "otimes operator" w
+\otimes $0
+endsnippet
+
+context "math()"
+snippet oslash "oslash operator" w
+\oslash $0
+endsnippet
+
+context "math()"
+snippet sqcap "squared cap operator" w
+\sqcap $0
+endsnippet
+
+context "math()"
+snippet sqcup "squared cup operator" w
+\sqcup $0
+endsnippet
+
+context "math()"
+snippet unlhd "unlhd operator" w
+\unhld $0
+endsnippet
+
+context "math()"
+snippet unrhd "unrhd operator" w
+\unrhd $0
+endsnippet
+
+context "math()"
+snippet uplus "uplus operator" w
+\uplus $0
+endsnippet
+
+context "math()"
+snippet vee "vee operator" w
+\vee $0
+endsnippet
+
+context "math()"
+snippet wedge "wedge operator" w
+\wedge $0
+endsnippet
+
+context "math()"
+snippet veebar "veebar operator" w
+\veebar $0
+endsnippet
+
+#Operators
+
+context "math()"
+snippet sum "sum operator" w
+\sum $0
+endsnippet
+
+context "math()"
+snippet int "integral" w
+\int $0
+endsnippet
+
+context "math()"
+snippet iint "double integral" w
+\iint $0
+endsnippet
+
+context "math()"
+snippet iiint "triple integral" w
+\iiint $0
+endsnippet
+
+context "math()"
+snippet prod "produt" w
+\prod $0
+endsnippet
+
+context "math()"
+snippet coprod "coproduct" w
+\coprod $0
+endsnippet
+
+context "math()"
+snippet  bigcap "big cap" w
+\bigcap $0
+endsnippet
+
+context "math()"
+snippet bigcup "big cup" w
+\bigcup $0
+endsnippet
+
+context "math()"
+snippet buplus "big u plus" w
+\biguplus $0
+endsnippet
+
+context "math()"
+snippet boplus "big o plus" w
+\bigoplus $0
+endsnippet
+
+context "math()"
+snippet botimes "big o times" w
+\bigotimes $0
+endsnippet
+
+context "math()"
+snippet bodot "big o dot" w
+\bigodot $0
+endsnippet
+
+context "math()"
+snippet bvee "big vee" w
+\bigvee $0
+endsnippet
+
+context "math()"
+snippet bwedge "big wedge" w
+\bigwedge $0
+endsnippet
+
+#Greek Characters
+
+context "math()"
+snippet alpha "alpha"  w
+\alpha $0
+endsnippet
+
+snippet beta "beta" w
+\beta $0
+endsnippet
+
+snippet gamma "gamma" w
+\gamma $0
+endsnippet
+
+snippet delta "delta" w
+\delta $0
+endsnippet
+
+snippet epsilon "epsilon" w
+\epsilon $0
+endsnippet
+
+snippet zeta "zeta" w
+\zeta $0
+endsnippet
+
+snippet eta "eta" w
+\eta $0
+endsnippet
+
+snippet theta "theta" w
+\theta $0
+endsnippet
+
+snippet iota "iota" w
+\iota $0
+endsnippet
+
+snippet kappa "kappa" w
+\kappa $0
+endsnippet
+
+snippet lambda "lambda" w
+\lambda $0
+endsnippet
+
+snippet mu "mu" w
+\mu $0
+endsnippet
+
+snippet nu "nu" w
+\nu $0
+endsnippet
+
+snippet xi "xi" w
+\xi $0
+endsnippet
+
+snippet omicron "omicron" w
+o$0
+endsnippet
+
+snippet pi "pi" w
+\pi $0
+endsnippet
+
+snippet rho "rho" w
+\rho $0
+endsnippet
+
+snippet sigma "sigma" w
+\sigma $0
+endsnippet
+
+snippet tau "tau" w
+\tau $0
+endsnippet
+
+snippet upsilon "upsilon" w
+\upsilon $0
+endsnippet
+
+snippet phi "phi" w
+\phi $0
+endsnippet
+
+snippet chi "chi" w
+\chi $0
+endsnippet
+
+snippet psi "psi" w
+\psi $0
+endsnippet
+
+snippet omega "omega" w
+\omega $0
+endsnippet
+
+snippet Gamma "Gamma" w
+\Gamma $0
+endsnippet
+
+snippet Delta "Delta" w
+\Delta $0
+endsnippet
+
+snippet Theta "Theta" w
+\Theta $0
+endsnippet
+
+snippet Lambda "Lambda" w
+\Lambda $0
+endsnippet
+
+snippet Xi "Xi" w
+\Xi $0
+endsnippet
+
+snippet Pi "Pi" w
+\Pi $0
+endsnippet
+
+snippet Sigma "Sigma" w
+\Sigma $0
+endsnippet
+
+snippet Upsilon "Upsilon" w
+\Upsilon $0
+endsnippet
+
+snippet Phi "Phi" w
+\Phi $0
+endsnippet
+
+snippet Psi "Psi" w
+\Psi $0
+endsnippet
+
+snippet Omega "Omega" w
+\Omega $0
+endsnippet
+
+context "math()"
+snippet partial "partial" w
+\partial $0
+endsnippet
+
+context "math()"
+snippet nabla "nabla" w
+\nabla $0
+endsnippet
+
+#Annotation
+
+context "math()"
+snippet cancel "cancel" Ai
+\cancel{$1} $0
+endsnippet
+
+#Sympy
+
+snippet sympy "sympyblock " w
+sympy $1 sympy$0
+endsnippet
+
+priority 10000
+snippet 'sympy(.*)sympy' "sympy" wr
+`!p
+from sympy import *
+x, y, z, t = symbols('x y z t')
+k, m, n = symbols('k m n', integer=True)
+f, g, h = symbols('f g h', cls=Function)
+init_printing()
+snip.rv = eval('latex(' + match.group(1).replace('\\', '').replace('^', '**').replace('{', '(').replace('}', ')') + ')')
+`
+endsnippet
